@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Date Invitation</title>
+<style>
+  body {
+    background-color: lightblue;
+    text-align: center;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    padding-top: 50px;
+  }
+  .cat-sticker {
+    width: 150px;
+    height: 150px;
+    background-image: url('./tonton-tonton-friends.gif');
+    background-size: cover;
+    margin: 0 auto;
+  }
+  .question {
+    font-size: 24px;
+    margin: 20px 0;
+  }
+  button {
+    font-size: 22px;
+    padding: 10px 20px;
+    margin: 10px;
+    cursor: pointer;
+    background-color: white;
+    border: 2px solid red;
+    border-radius: 10px;
+    color: red;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+  }
+  button:hover {
+    color: darkred;
+    border-color: darkred;
+  }
+  #celebration {
+    display: none;
+    font-size: 32px;
+    color: red;
+    font-weight: bold;
+  }
+  .firework {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: red;
+    animation: explode 1s ease-out infinite;
+  }
+  @keyframes explode {
+    from { transform: scale(0); }
+    to { transform: scale(3); }
+  }
+</style>
+</head>
+<body>
+
+<div class="cat-sticker"></div>
+<div class="question">Will you go out on a date with me?</div>
+<button id="yesButton" onclick="celebrate()">Yes</button>
+<button id="noButton">No</button>
+<div id="celebration">Yaay issa Date!!</div>
+
+<script>
+  const noButton = document.getElementById('noButton');
+  const threshold = 100; // How close the mouse has to be to make the button move
+
+  document.onmousemove = function(event) {
+    const mouseX = event.clientX;
+    const mouseY = event.clientY;
+    const buttonX = noButton.offsetLeft + noButton.offsetWidth / 2;
+    const buttonY = noButton.offsetTop + noButton.offsetHeight / 2;
+
+    const dist = Math.hypot(buttonX - mouseX, buttonY - mouseY);
+
+    if (dist < threshold) {
+      const offsetX = Math.random() * 300 - 150; // Random X offset
+      const offsetY = Math.random() * 300 - 150; // Random Y offset
+      let newPosX = noButton.offsetLeft + offsetX;
+      let newPosY = noButton.offsetTop + offsetY;
+
+      // Keep the button within the viewport
+      newPosX = Math.max(0, Math.min(newPosX, window.innerWidth - noButton.offsetWidth));
+      newPosY = Math.max(0, Math.min(newPosY, window.innerHeight - noButton.offsetHeight));
+
+      noButton.style.position = 'absolute';
+      noButton.style.left = newPosX + 'px';
+      noButton.style.top = newPosY + 'px';
+    }
+  };
+
+  function celebrate() {
+    document.getElementById('celebration').style.display = 'block';
+    for (let i = 0; i < 100; i++) {
+      createFirework();
+    }
+  }
+
+  function createFirework() {
+    const firework = document.createElement('div');
+    firework.className = 'firework';
+    firework.style.left = Math.random() * window.innerWidth + 'px';
+    firework.style.top = Math.random() * window.innerHeight + 'px';
+    document.body.appendChild(firework);
+    setTimeout(() => document.body.removeChild(firework), 1000);
+  }
+</script>
+
+</body>
+</html>
